@@ -4,7 +4,6 @@ import time
 import Logic as LOGIC
 import Hydrophone_Array as Hydrophone_Array
 from Scripts.Hydrophone import HydrophoneConfig
-sampling_freq = 781250
 
 # folder = time.strftime('%Y-%m-%d--%H-%M-%S')
 # path = os.path.join("Scripts",folder)
