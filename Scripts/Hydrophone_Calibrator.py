@@ -35,7 +35,8 @@ class HydrophoneCalibrator:
         ref_freq = freqs[peak_freq_idx]
 
 
-        ref_ampl = np.abs(hilbert(hydro.voltages))
+        # ref_ampl = np.abs(hilbert(hydro.voltages))
+        ref_ampl = np.max(hydro.voltages) - np.min(hydro.voltages)
 
         return ref_toa, ref_freq, ref_ampl
         #notes to self: TIMES is functionally the keyset for VOLTAGES?
