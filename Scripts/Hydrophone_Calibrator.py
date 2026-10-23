@@ -1,14 +1,14 @@
-import Hydrophone
+import Scripts.Hydrophone as Hydrophone
 from scipy.signal import hilbert
 from scipy.fft import fft, fftfreq
 import numpy as np
-import HydrophoneArray
+from Scripts.Hydrophone_Array import HydrophoneArray
 
 class HydrophoneCalibrator:
     """Calibrates signals of hydrophones in array to a reference hydrophone"""
     hydroarray: Optional[HydrophoneArray] = None
 
-    def __init__(arra):
+    def __init__(self, arra):
         self.hydroarray = arra
 
     def create_ref(self, hydro: Hydrophone.Hydrophone):
@@ -19,7 +19,7 @@ class HydrophoneCalibrator:
         #    hydro: hydrophone to use as reference
         #    assumes the hydrophone has data loaded
 
-        hydroarray.estimate_toa_by_envelope(hydro)
+        self.hydroarray.estimate_toa_by_envelope(hydro)
         ref_toa = hydro.toa_idx
 
         #if(hydro.found_peak):
@@ -28,8 +28,8 @@ class HydrophoneCalibrator:
         fft_output = fft(hydro.voltages)
         dt = hydro.times[1]-hydro.times[0] # or use the hydroarray samplefreq?
         freqs = fftfreq(len(hydro.voltages), dt)
-        freqs = freqs[:n//2] #positives only
-        fft_output = fft_output[:n//2]
+        freqs = freqs[:len(freqs)//2] #positives only
+        fft_output = fft_output[:len(freqs)//2]
             
         peak_freq_idx = np.argmax(np.abs(fft_output))
         ref_freq = freqs[peak_freq_idx]
@@ -43,16 +43,19 @@ class HydrophoneCalibrator:
         #should definitely check logic2 to see tf is going on
 
     def calibrate_single(self, hydro: Hydrophone.Hydrophone, ref_toa, ref_freq, ref_ampl):
-        hydtoa, hydfreq, hydampl = create_ref(hydro)
+        hydtoa, hydfreq, hydampl = self.create_ref(hydro)
 
         hydro.freq_adjust = ref_freq/hydfreq # calculate freq adj
         hydro.ps_adjust = ref_toa - hydtoa # calculate toa adj
         hydro.ampl_adjust = ref_ampl/hydampl # ref_ampl has alr been hilberted
 
-        print(hydro.freq_adjust + " " + hydro.ps_adjust + " " + hydro.ampl_adjust)
+        print(str(hydro.freq_adjust) + " " + str(hydro.ps_adjust) + " " + str(hydro.ampl_adjust))
 
     def calibrate_all(self):
-        ref_toa, ref_freq, ref_ampl = create_ref(hydroarray[0])
+        ref_toa, ref_freq, ref_ampl = self.create_ref(self.hydroarray.hydrophones[0])
         i = 1
-        while i < len(hydroarray):
-            calibrate_single(hydroarray[i])
+        while i < len(self.hydroarray.hydrophones):
+            self.calibrate_single(self.hydroarray.hydrophones[i], ref_toa, ref_freq, ref_ampl)
+            i += 1
+
+
