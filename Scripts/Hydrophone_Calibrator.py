@@ -11,7 +11,7 @@ class HydrophoneCalibrator:
     def __init__(self, arra):
         self.hydroarray = arra
 
-    def create_ref(self, hydro: Hydrophone.Hydrophone):
+    def read_vals(self, hydro: Hydrophone.Hydrophone):
         #Calculates reference TOA, frequency and amplitude to use for calibrating other hydrophones.
         #literally tells you what the hydrophone thinks it read
 
@@ -35,24 +35,27 @@ class HydrophoneCalibrator:
         ref_freq = freqs[peak_freq_idx]
 
 
-        # ref_ampl = np.abs(hilbert(hydro.voltages))
-        ref_ampl = np.max(hydro.voltages) - np.min(hydro.voltages)
+        ref_ampl = np.abs(hilbert(hydro.voltages))
+        # ref_ampl = np.max(hydro.voltages) - np.min(hydro.voltages)
 
         return ref_toa, ref_freq, ref_ampl
         #notes to self: TIMES is functionally the keyset for VOLTAGES?
         #should definitely check logic2 to see tf is going on
 
     def calibrate_single(self, hydro: Hydrophone.Hydrophone, ref_toa, ref_freq, ref_ampl):
-        hydtoa, hydfreq, hydampl = self.create_ref(hydro)
+        hydtoa, hydfreq, hydampl = self.read_vals(hydro)
 
         hydro.freq_adjust = ref_freq/hydfreq # calculate freq adj
         hydro.ps_adjust = ref_toa - hydtoa # calculate toa adj
-        hydro.ampl_adjust = ref_ampl/hydampl # ref_ampl has alr been hilberted
+        ref_ampl = ref_ampl[ref_toa:]
+        hydampl = hydampl[hydtoa:]
+        hydro.ampl_adjust = np.mean(ref_ampl/hydampl)
 
         print(str(hydro.freq_adjust) + " " + str(hydro.ps_adjust) + " " + str(hydro.ampl_adjust))
 
     def calibrate_all(self):
-        ref_toa, ref_freq, ref_ampl = self.create_ref(self.hydroarray.hydrophones[0])
+        ref_toa, ref_freq, ref_ampl = self.read_vals(self.hydroarray.hydrophones[0])
+        print(ref_freq)
         i = 1
         while i < len(self.hydroarray.hydrophones):
             self.calibrate_single(self.hydroarray.hydrophones[i], ref_toa, ref_freq, ref_ampl)
