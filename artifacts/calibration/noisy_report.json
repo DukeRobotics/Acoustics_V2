@@ -1,0 +1,44 @@
+{
+  "capture": "artifacts\\calibration\\noisy.bin",
+  "sampling_freq_hz": 781250.0,
+  "num_samples": 15625,
+  "channels": [
+    {
+      "channel": 0,
+      "toa_idx": 3224,
+      "toa_time_seconds": 0.00412672,
+      "freq_adjust": 1.0,
+      "ps_adjust_samples": 0,
+      "ps_adjust_seconds": 0.0,
+      "ampl_adjust": 1.0
+    },
+    {
+      "channel": 1,
+      "toa_idx": 3305,
+      "toa_time_seconds": 0.0042304000000000005,
+      "freq_adjust": 1.0,
+      "ps_adjust_samples": -81,
+      "ps_adjust_seconds": -0.00010368,
+      "ampl_adjust": 1.997799976111159
+    },
+    {
+      "channel": 2,
+      "toa_idx": 3164,
+      "toa_time_seconds": 0.00404992,
+      "freq_adjust": 1.0,
+      "ps_adjust_samples": 60,
+      "ps_adjust_seconds": 7.68e-05,
+      "ampl_adjust": 0.6665970677079952
+    },
+    {
+      "channel": 3,
+      "toa_idx": 3349,
+      "toa_time_seconds": 0.00428672,
+      "freq_adjust": 1.0,
+      "ps_adjust_samples": -125,
+      "ps_adjust_seconds": -0.00016,
+      "ampl_adjust": 1.2500578888911924
+    }
+  ],
+  "synthetic_truth_check": "passed"
+}

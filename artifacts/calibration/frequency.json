@@ -1,0 +1,50 @@
+{
+  "synthetic": true,
+  "seed": 20261029,
+  "sampling_freq_hz": 781250.0,
+  "num_samples": 15625,
+  "noise_std_volts": 0.0,
+  "amplitudes_volts": [
+    0.8,
+    0.4,
+    1.2,
+    0.64
+  ],
+  "frequencies_hz": [
+    31250.0,
+    30000.0,
+    35000.0,
+    37500.0
+  ],
+  "delays_samples": [
+    0,
+    80,
+    -60,
+    125
+  ],
+  "dc_offsets_volts": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "expected_freq_adjust": [
+    1.0,
+    1.0416666666666667,
+    0.8928571428571429,
+    0.8333333333333334
+  ],
+  "expected_ps_adjust_samples": [
+    0,
+    -80,
+    60,
+    -125
+  ],
+  "expected_ampl_adjust": [
+    1.0,
+    2.0,
+    0.6666666666666667,
+    1.25
+  ],
+  "profile": "frequency"
+}
