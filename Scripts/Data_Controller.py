@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bd76ec5404e3d4f4b2f6b5f651630bb90b07170a7b4e1049c54c4a9c127f613f
-size 695
+import os
+import matplotlib.pyplot as plt
+import time
+import Logic as LOGIC
+import Hydrophone_Array
+
+SAMPLING_FREQ = 781250
+SELECTED = [True, True, True, True]
+# what is the truth of the hydrophone
+prefix = "testgi_"
+data_collection = prefix + "Data_Collection"
+base_path = os.path.join("Scripts", data_collection)
+os.makedirs(base_path, exist_ok = True)
+
+logic = LOGIC.Logic(sampling_freq=SAMPLING_FREQ)
+logic.print_saleae_status()
+
+epochs = 10
+for epoch in range (0, epochs):
+    print(f"epoch {epoch}")
+    
+    time_stamp = time.strftime('%Y-%m-%d--%H-%M-%S')
+    name = prefix + time_stamp
+    logic.export_binary_capture(2, base_path, name)
+
+logic.kill_logic()
+
